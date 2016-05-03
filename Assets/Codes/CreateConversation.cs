@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Create : MonoBehaviour {
+public class CreateConversation : MonoBehaviour {
 
     [ContextMenu("CreateDialogBox")]
     public void CreateDialogBox() {
