@@ -64,7 +64,7 @@ namespace Mooji.Avatar
             image = GetComponent<Image>();
 
             currAnimDir = currAnimDir == AnimDir.NONE ? AnimDir.Bottom : currAnimDir;
-            currAnimType = AnimType.Run;
+            currAnimType = AnimType.IDEL;
 
             var runAnim = GameObject.Instantiate( runAnimGo ) as GameObject;
             var avatarAnim = runAnim.GetComponent<AvatarAnimVo>();
@@ -89,19 +89,17 @@ namespace Mooji.Avatar
             idelAnimSpriteMapping.Add( AnimDir.Right , avatarAnim.s3 );
             idelAnimSpriteMapping.Add( AnimDir.Right_Bottom , avatarAnim.s2 );
 
-
-
-            //OnAnimDirChenged();
-
-        }
-
-        private void OnAnimDirChenged()
-        {
-            //currSpriteArr = runAnimSpriteMapping[ currAnimDir ]; 
         }
 
         public void SetCurrAnimType( AnimType at )
         {
+
+            if ( currAnimType != at )
+            {
+                curFram = 0;
+                fTime = 0;
+            }
+
             this.currAnimType = at;
         }
 
@@ -119,7 +117,8 @@ namespace Mooji.Avatar
             //    v3 = new Vector3( ( Screen.width >> 1 ) - v3.x   , ( Screen.height >> 1 ) - v3.y , v3.z );
             //    Debug.Log( v3 + "," + Screen.width + "," + Screen.height);
             //}
-            
+            //this.transform.localPosition = Vector3.MoveTowards( this.transform.localPosition , Input.mousePosition , 120 * Time.deltaTime );
+
 
 
             if ( AnimDir.Top_Right == currAnimDir || AnimDir.Right == currAnimDir || AnimDir.Right_Bottom == currAnimDir )
@@ -138,6 +137,8 @@ namespace Mooji.Avatar
                 IsISO = false;
             }
 
+
+            RotationAnim();
 
             switch( currAnimType )
             {
@@ -171,16 +172,99 @@ namespace Mooji.Avatar
             }
         }
 
-        public void StopAnim()
+        //public void StopAnim()
+        //{
+        //    fTime = 0;
+        //    curFram = 0;
+        //    m_bStop = true;
+        //}
+
+        //public void PlayAnim()
+        //{
+        //    m_bStop = false;
+        //}
+
+
+
+        private Vector3 prePos;
+
+        public void RotationAnim()
         {
-            fTime = 0;
-            curFram = 0;
-            m_bStop = true;
+
+            if ( prePos.Equals( this.transform.localPosition ) )
+            {
+                SetCurrAnimType( AnimType.IDEL );
+                return;
+            }
+
+            var vMyX = this.transform.localPosition.x;
+            var vMyY = this.transform.localPosition.y;
+            var vNpcX = prePos.x;
+            var vNpcY = prePos.y;
+            vMyX -= vNpcX;
+            vMyY -= vNpcY;
+
+            var angle = Math.Atan2( vMyX , vMyY );
+            angle = angle*( 180/Math.PI );
+
+            if ( angle<0 )
+            {
+                //在左边
+                if ( angle>-15 )
+                {
+                    OnMoveTargetChanged( AnimDir.Top );//
+                }
+                if ( angle<=-15 && angle>=-75 )
+                {
+                    OnMoveTargetChanged( AnimDir.Left_Top );
+                }
+                if ( angle< -75 && angle>=-105 )
+                {
+                    OnMoveTargetChanged( AnimDir.Left );
+                }
+                if ( angle< -105 && angle>=-165 )
+                {
+                    OnMoveTargetChanged( AnimDir.Bottom_Left );
+                }
+                if ( angle<-165 )
+                {
+                    OnMoveTargetChanged( AnimDir.Bottom );//
+                }
+            }
+            else
+            {
+                //在右边	
+                if ( angle>=75 && angle<=105 )
+                {
+                    OnMoveTargetChanged( AnimDir.Right );
+                }
+                if ( angle>=15 && angle<75 )
+                {
+                    OnMoveTargetChanged( AnimDir.Top_Right);
+                }
+                if ( angle<15 )
+                {
+                    OnMoveTargetChanged( AnimDir.Top );//
+                }
+                if ( angle>105 && angle<165 )
+                {
+                    OnMoveTargetChanged( AnimDir.Right_Bottom );
+                }
+                if ( angle>165 )
+                {
+                    OnMoveTargetChanged( AnimDir.Bottom );
+                }
+            }
+
+            prePos = this.transform.localPosition;
+
+
         }
 
-        public void PlayAnim()
+        public void OnMoveTargetChanged( AnimDir ad )
         {
-            m_bStop = false;
+            SetCurrAnimDic( ad );
+            SetCurrAnimType( AnimType.Run );
         }
 
         public void OnClickedUp()
