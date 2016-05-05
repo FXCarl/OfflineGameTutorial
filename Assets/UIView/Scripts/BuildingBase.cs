@@ -3,38 +3,48 @@ using System.Collections;
 using UnityEngine.UI;
 public class BuildingBase : MonoBehaviour {
 
+    public HierarchyStateMachine hsm;
     public Animator animator;
     public Image loadingImg;
-
+    public string trigger ;
 
     private bool isCreateBuilding;
     private bool isRuning;
 
+
+
 	public void OnAnimEnd()
     {
-        isRuning = false;
-        Debug.Log( "isRuning = " + isRuning );
-        //loadingImg.fillAmount = 0;
+        hsm.SetNextState();
     }
 
-    public void BuildButtonClicked()
+    public void OnEnable()
     {
-
-
-        if ( isRuning )
-            return;
-
-        isRuning = true;
-
-        if ( !isCreateBuilding )
+        if( this.transform.parent.gameObject.activeSelf )
         {
-            animator.SetTrigger( "Building" );
-            isCreateBuilding = true;
-        }
-        else
-        {
-            animator.SetTrigger( "Npc" );
+            animator.SetTrigger( trigger );
         }
     }
+
+
+    //public void BuildButtonClicked()
+    //{
+
+
+    //    if ( isRuning )
+    //        return;
+
+    //    isRuning = true;
+
+    //    if ( !isCreateBuilding )
+    //    {
+    //        animator.SetTrigger( "Building" );
+    //        isCreateBuilding = true;
+    //    }
+    //    else
+    //    {
+    //        animator.SetTrigger( "Npc" );
+    //    }
+    //}
 
 }
