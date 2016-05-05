@@ -6,11 +6,10 @@ public class UiView : MonoBehaviour {
 
     public CanvasGroup containerCG;
 
-
+    public HierarchyStateMachine hStateMachine ;
 
     void Awake()
     {
-        containerCG.alpha = 0;
     }
 
 	// Use this for initialization
@@ -42,8 +41,7 @@ public class UiView : MonoBehaviour {
 
     public void Close()
     {
-        containerCG.alpha = 0;
-        GameObject.Destroy( this.transform.parent );
+        hStateMachine.SetNextState();
     }
 
     public void OnClickedBuilding()
