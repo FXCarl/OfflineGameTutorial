@@ -278,7 +278,7 @@ namespace Mooji.Avatar
                 if (null != go)
                 {
                     TargetManager tm = go.GetComponent<TargetManager>();
-                    tm.RemoveOne();
+                    tm.RemoveOne(transform.parent.gameObject);
                 }
             }
         }

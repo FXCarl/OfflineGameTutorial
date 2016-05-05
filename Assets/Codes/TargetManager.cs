@@ -53,9 +53,9 @@ public class TargetManager : MonoBehaviour
         }
     }
 
-    public void RemoveOne()
+    public void RemoveOne(GameObject go)
     {
-        if (null != targets && targets.Count > 0 && null!=currentTarget)
+        if (null != targets && targets.Count > 0 && null!=currentTarget && go==currentTarget)
         {
             GameObject.Destroy(currentTarget);
             targets.Remove(currentTarget);
