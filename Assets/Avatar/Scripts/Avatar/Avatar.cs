@@ -271,10 +271,23 @@ namespace Mooji.Avatar
         {
             var xOffset = Math.Abs( this.transform.position.x - Input.mousePosition.x );
             var yOffset = Math.Abs( this.transform.position.y - Input.mousePosition.y );
-            if ( xOffset <= 25 && yOffset <= 35 )
+            if (xOffset <= 25 && yOffset <= 35) { 
                 Debug.Log("Clicked!");
+
+                GameObject go = GameObject.Find("TargetManager");
+                if (null != go)
+                {
+                    TargetManager tm = go.GetComponent<TargetManager>();
+                    tm.RemoveOne();
+                }
+            }
         }
 
+        public void ShowTarget()
+        {
+            Image img = gameObject.GetComponent<Image>();
+            img.color = Color.red;
+        }
     }
 
 }
