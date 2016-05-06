@@ -10,6 +10,9 @@ public interface IHierarchyStateMachine : IEventSystemHandler
 
 public class HierarchyStateMachine : MonoBehaviour, IHierarchyStateMachine{
 
+
+    public float autoNextTime;
+
     public int CurrentState
     {
         get;
@@ -19,6 +22,12 @@ public class HierarchyStateMachine : MonoBehaviour, IHierarchyStateMachine{
 	// Use this for initialization
 	void Start () {
         SetState(0);    //  设置Index为0
+
+        if( autoNextTime != 0f )
+        {
+            Invoke( "SetNextState" , autoNextTime );
+        }
+
 	}
 
     public void SetState(int index)

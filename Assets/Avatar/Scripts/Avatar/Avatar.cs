@@ -65,6 +65,8 @@ namespace Mooji.Avatar
                 targetMarkerImg = go.transform.GetComponent<Image>();
                 targetMarkerImg.transform.gameObject.SetActive( false );
             }
+            image = GetComponent<Image>();
+            image.enabled = false;
           
         }
 
@@ -75,7 +77,7 @@ namespace Mooji.Avatar
             idelAnimSpriteMapping = new Dictionary<AnimDir , Sprite[]>();
             m_bStop = true;
 
-            image = GetComponent<Image>();
+           
 
             currAnimDir = currAnimDir == AnimDir.NONE ? AnimDir.Bottom : currAnimDir;
             currAnimType = AnimType.IDEL;
@@ -124,7 +126,8 @@ namespace Mooji.Avatar
        
         void Update()
         {
-
+            if ( !image.enabled )
+                image.enabled = true;
             //if ( Input.GetMouseButtonUp( 0 ) )
             //{
             //    var v3 = Input.mousePosition;
