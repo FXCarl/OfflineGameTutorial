@@ -8,6 +8,10 @@ public class UiView : MonoBehaviour {
 
     public HierarchyStateMachine hStateMachine ;
 
+    public Transform topUI;
+
+    public Transform topUICopy;
+
     void Awake()
     {
     }
@@ -41,8 +45,19 @@ public class UiView : MonoBehaviour {
 
     public void Close()
     {
+        if ( topUICopy )
+            topUICopy.gameObject.SetActive( true );
+
         hStateMachine.SetNextState();
     }
+
+    public void OnCreateNameComplete()
+    {
+        topUI.gameObject.SetActive( true );
+        this.transform.gameObject.SetActive( false );
+        Invoke( "Close" , 1.5f );
+    }
+
 
     public void OnClickedBuilding()
     {
