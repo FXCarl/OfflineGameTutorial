@@ -38,6 +38,9 @@ namespace Mooji.Avatar
         protected GameObject idelAnimGo;
 
         [SerializeField]
+        protected GameObject deadAnimGo;
+
+        [SerializeField]
         protected AnimDir currAnimDir;
 
         [SerializeField]
@@ -53,6 +56,17 @@ namespace Mooji.Avatar
         private Dictionary<AnimDir , Sprite[]> idelAnimSpriteMapping;
         private bool m_bStop;
 
+        private Image targetMarkerImg;
+        void Awake()
+        {
+            var go = this.transform.parent.FindChild( "TargetMarker" );
+            if( go)
+            {
+                targetMarkerImg = go.transform.GetComponent<Image>();
+                targetMarkerImg.transform.gameObject.SetActive( false );
+            }
+          
+        }
 
         void Start()
         {
@@ -272,21 +286,21 @@ namespace Mooji.Avatar
             var xOffset = Math.Abs( this.transform.position.x - Input.mousePosition.x );
             var yOffset = Math.Abs( this.transform.position.y - Input.mousePosition.y );
             if (xOffset <= 25 && yOffset <= 35) { 
-                Debug.Log("Clicked!");
-
-                GameObject go = GameObject.Find("TargetManager");
-                if (null != go)
-                {
-                    TargetManager tm = go.GetComponent<TargetManager>();
-                    tm.RemoveOne(transform.parent.gameObject);
-                }
+                Debug.Log("Clicked!" + this.gameObject.name);
             }
+
+            //var go = this.transform.FindChild("TargetMarker") ;
+
+            //if ( go && go.gameObject.activeSelf)
+            //{
+            //    go.GetComponent<TargetMarker>().OnClcked();
+            //}
         }
 
         public void ShowTarget()
         {
-            Image img = gameObject.GetComponent<Image>();
-            img.color = Color.red;
+            if ( targetMarkerImg )
+                targetMarkerImg.gameObject.SetActive( true );
         }
     }
 
