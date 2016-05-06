@@ -96,12 +96,17 @@ public class TargetManager : MonoBehaviour
             //GameObject.Destroy(currentTarget);
             
             var bloodEffVo = bloodTargets[ bloodIndex ].GetComponent<BloodEffVo>();
-            bloodEffVo.ShowEff( currentTarget.GetComponentInChildren<Mooji.Avatar.Avatar>() );
+
+            var avatar = currentTarget.GetComponentInChildren<Mooji.Avatar.Avatar>();
+            bloodEffVo.ShowEff( avatar );
             bloodIndex += 1;
 
-
-            currentTarget.SetActive( false );
+            avatar.Dead( currentTarget , targets );
             targets.Remove( currentTarget );
+            //currentTarget.SetActive( false );
+            //targets.Remove( currentTarget );
+
+           
         }
         SelectTarget();
     }

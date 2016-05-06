@@ -23,6 +23,7 @@ namespace Mooji.Avatar
     {
         IDEL ,
         Run ,
+        Dead ,
     }
 
     public class Avatar : MonoBehaviour
@@ -54,6 +55,7 @@ namespace Mooji.Avatar
 
         private Dictionary<AnimDir , Sprite[]> runAnimSpriteMapping;
         private Dictionary<AnimDir , Sprite[]> idelAnimSpriteMapping;
+        private Dictionary<AnimDir , Sprite[]> deadAnimSpriteMapping ;
         private bool m_bStop;
 
         private Image targetMarkerImg;
@@ -75,6 +77,7 @@ namespace Mooji.Avatar
 
             runAnimSpriteMapping = new Dictionary<AnimDir , Sprite[]>();
             idelAnimSpriteMapping = new Dictionary<AnimDir , Sprite[]>();
+            deadAnimSpriteMapping= new Dictionary<AnimDir , Sprite[]>();
             m_bStop = true;
 
            
@@ -105,6 +108,21 @@ namespace Mooji.Avatar
             idelAnimSpriteMapping.Add( AnimDir.Right , avatarAnim.s3 );
             idelAnimSpriteMapping.Add( AnimDir.Right_Bottom , avatarAnim.s2 );
 
+            if ( deadAnimGo )
+            {
+                var deadAnim = (GameObject.Instantiate( deadAnimGo ) as GameObject).GetComponent<AvatarAnimVo>();
+                deadAnimSpriteMapping.Add( AnimDir.Bottom , deadAnim.s1 );
+                deadAnimSpriteMapping.Add( AnimDir.Bottom_Left , deadAnim.s2 );
+                deadAnimSpriteMapping.Add( AnimDir.Left , deadAnim.s3 );
+                deadAnimSpriteMapping.Add( AnimDir.Left_Top , deadAnim.s4 );
+                deadAnimSpriteMapping.Add( AnimDir.Top , deadAnim.s5 );
+                deadAnimSpriteMapping.Add( AnimDir.Top_Right , deadAnim.s4 );
+                deadAnimSpriteMapping.Add( AnimDir.Right , deadAnim.s3 );
+                deadAnimSpriteMapping.Add( AnimDir.Right_Bottom , deadAnim.s2 );
+            }
+            
+
+
         }
 
         public void SetCurrAnimType( AnimType at )
@@ -123,11 +141,14 @@ namespace Mooji.Avatar
         {
             this.currAnimDir = ad;
         }
-       
+
+        private bool isDead;
+
         void Update()
         {
             if ( !image.enabled )
                 image.enabled = true;
+
             //if ( Input.GetMouseButtonUp( 0 ) )
             //{
             //    var v3 = Input.mousePosition;
@@ -154,7 +175,6 @@ namespace Mooji.Avatar
                 IsISO = false;
             }
 
-
             RotationAnim();
 
             switch( currAnimType )
@@ -169,7 +189,14 @@ namespace Mooji.Avatar
                     currSpriteArr = idelAnimSpriteMapping[ currAnimDir ];
                     break;
                 }
+                case AnimType.Dead:
+                {
+                    currSpriteArr = deadAnimSpriteMapping[ currAnimDir ];
+                    break;
+                }
             }
+
+          
 
             if ( fps == 0 )
                 fps = currSpriteArr.Length ;
@@ -184,8 +211,19 @@ namespace Mooji.Avatar
 
                 fTime = 0;
 
-                if ( curFram >= currSpriteArr.Length )
+                if ( curFram >= currSpriteArr.Length - 1)
+                {
                     curFram = 0;
+                    if ( currAnimType == AnimType.Dead )
+                    {
+                        isDead = true;
+                        if( currentTarget )
+                        {
+                            currentTarget.SetActive( false );
+                        }
+                        
+                    }
+                }
             }
         }
 
@@ -207,6 +245,9 @@ namespace Mooji.Avatar
 
         public void RotationAnim()
         {
+
+            if ( isDead )
+                return;
 
             if ( prePos.Equals( this.transform.localPosition ) )
             {
@@ -304,6 +345,24 @@ namespace Mooji.Avatar
         {
             if ( targetMarkerImg )
                 targetMarkerImg.gameObject.SetActive( true );
+        }
+
+        private GameObject currentTarget;
+        private List<GameObject> targets;
+
+        public bool Dead( GameObject currentTarget , List<GameObject> targets )
+        {
+            this.currentTarget = currentTarget;
+            this.targets = targets;
+
+
+            if ( deadAnimSpriteMapping.Count > 0 )
+            {
+                SetCurrAnimType( AnimType.Dead );
+                isDead = true;
+                return true;
+            }
+            return false;
         }
     }
 
