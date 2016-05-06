@@ -38,6 +38,9 @@ namespace Mooji.Avatar
         protected GameObject idelAnimGo;
 
         [SerializeField]
+        protected GameObject deadAnimGo;
+
+        [SerializeField]
         protected AnimDir currAnimDir;
 
         [SerializeField]
