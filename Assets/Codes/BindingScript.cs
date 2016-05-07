@@ -7,7 +7,7 @@ public class BindingScript : MonoBehaviour
     private GameObject[] obj;
     private GameObject[] Act;
 
-    private AudioSourceConfig AudioSource;
+    public AudioSourceConfig AudioSource;
     // Use this for initialization
     void Start()
     {
@@ -26,6 +26,7 @@ public class BindingScript : MonoBehaviour
         }
     }
 
+
     private void BindingAudioSources(GameObject _obj)
     {
         if (_obj.ToString().StartsWith("Act"))
@@ -36,8 +37,9 @@ public class BindingScript : MonoBehaviour
                 Act[i] = _obj.transform.GetChild(i).gameObject;
                 Act[i].AddComponent<AudioSource>();
                 Act[ i ].GetComponent<AudioSource>().loop = false;
-                //Debug.Log( Act[ i ].name );
-                //Act[ i ].GetComponent<AudioSource>().clip = AudioSource.
+                Act[ i ].GetComponent<AudioSource>().clip = AudioSource.audioclipMapping[ Act[ i ].name ];
+                //Debug.Log( AudioSource.ActDialogAudio[ 1 ].GetType() );
+                //Debug.Log( Act[ i ].GetComponent<AudioSource>().clip.name );
             }
         }
     }
