@@ -15,13 +15,16 @@ public class ActionManager : MonoBehaviour {
         if ( this.transform.parent.gameObject.activeSelf )
         {
             this.StartAction();
-            CURR_ACTION_NUM += 1 ;
         }
     }
 
     private void StartAction()
     {
-        actionTrans.gameObject.SetActive( true );
+        if ( actionTrans )
+        {
+            actionTrans.gameObject.SetActive( true );
+            CURR_ACTION_NUM += 1;
+        }
     }
 
 	public void Update()

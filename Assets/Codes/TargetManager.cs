@@ -85,8 +85,13 @@ public class TargetManager : MonoBehaviour
         {
             currentTarget = null;
             tm.gameObject.SetActive( false );
-            hsm.SetNextState();
+            Invoke( "NextState" , 1f );
         }
+    }
+
+    private void NextState()
+    {
+        hsm.SetNextState();
     }
 
     public void RemoveOne()
