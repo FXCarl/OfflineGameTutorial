@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public interface IHierarchyStateMachine : IEventSystemHandler
 {
@@ -21,6 +22,17 @@ public class HierarchyStateMachine : MonoBehaviour, IHierarchyStateMachine{
 
 	// Use this for initialization
 	void Start () {
+
+        var bg = GameObject.Find( "BG" ).GetComponent<Image>();
+        var currImg = this.GetComponent<Image>();
+
+        if( currImg )
+        {
+            bg.sprite = currImg.sprite;
+            bg.SetNativeSize();
+            currImg.enabled = false;
+        }
+
         SetState(0);    //  设置Index为0
 
         if( autoNextTime != 0f )
