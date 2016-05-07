@@ -19,7 +19,7 @@ public class UiView : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
-        this.transform.SetParent( GameObject.Find("UIS").transform );
+        //this.transform.SetParent( GameObject.Find("UIS").transform );
 	}
 	
 	// Update is called once per frame
