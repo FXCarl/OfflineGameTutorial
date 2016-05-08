@@ -58,9 +58,18 @@ public class SpriteArrSort : IComparer<Sprite>
 {
     public int Compare( Sprite x , Sprite y )
     {
-        var xName = x.name.Replace( "blood_" , "" );
-        var yName = y.name.Replace( "blood_" , "" );
-        return int.Parse( xName ) < int.Parse( yName ) ? -1 : 1;
+        if( x.name.IndexOf("blood_") == 0)
+        {
+            var xName = x.name.Replace( "blood_" , "" );
+            var yName = y.name.Replace( "blood_" , "" );
+            return int.Parse( xName ) < int.Parse( yName ) ? -1 : 1;
+        }
+        else
+        {
+            var xName = x.name.Replace( "fire_" , "" );
+            var yName = y.name.Replace( "fire_" , "" );
+            return int.Parse( xName ) < int.Parse( yName ) ? -1 : 1;
+        }
     }
 }
 
