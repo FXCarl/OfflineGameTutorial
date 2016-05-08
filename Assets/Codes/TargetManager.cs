@@ -6,6 +6,11 @@ using Mooji.Avatar;
 public class TargetManager : MonoBehaviour
 {
 
+
+    public int aType;
+    public AudioSourceConfig asc;
+
+
     public List<GameObject> targets;
 
     public List<GameObject> bloodTargets; 
@@ -111,8 +116,23 @@ public class TargetManager : MonoBehaviour
             //currentTarget.SetActive( false );
             //targets.Remove( currentTarget );
 
-           
+            if( this.aType == 1)
+            {
+
+                this.asc.PlayShotSound();
+            }
+            else
+            {
+                this.asc.PlayBurningBottle();
+            }
+            Invoke("p",0.3f);
+
         }
         SelectTarget();
+    }
+
+    private void p()
+    {
+        asc.PlayZombileDeath();
     }
 }
