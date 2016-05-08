@@ -23,7 +23,7 @@ public class HierarchyStateMachine : MonoBehaviour, IHierarchyStateMachine{
 	// Use this for initialization
 	void Start () {
 
-        var bg = GameObject.Find( "BG" ).GetComponent<Image>();
+        var bg = GameObject.Find( "BG" ).GetComponent<Image>(); //bg.gameObject.SetActive( true );
         var currImg = this.GetComponent<Image>();
 
         if( currImg )
