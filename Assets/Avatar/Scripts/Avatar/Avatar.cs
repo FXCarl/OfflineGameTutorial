@@ -69,6 +69,8 @@ namespace Mooji.Avatar
             }
             image = GetComponent<Image>();
             image.enabled = false;
+
+			//GetComponent<RectTransform>().localScale = new Vector3(.9f,.9f,.9f) ;
           
         }
 
