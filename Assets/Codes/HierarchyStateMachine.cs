@@ -14,6 +14,8 @@ public class HierarchyStateMachine : MonoBehaviour, IHierarchyStateMachine{
 
     public float autoNextTime;
 
+    public Transform t;
+
     public int CurrentState
     {
         get;
@@ -29,7 +31,7 @@ public class HierarchyStateMachine : MonoBehaviour, IHierarchyStateMachine{
         if( currImg )
         {
             bg.sprite = currImg.sprite;
-            bg.SetNativeSize();
+           // bg.SetNativeSize();
             currImg.enabled = false;
         }
 
@@ -44,6 +46,9 @@ public class HierarchyStateMachine : MonoBehaviour, IHierarchyStateMachine{
 
     public void SetState(int index)
     {
+        if (t != null)
+            t.gameObject.SetActive(true);
+
         //  如果Index的大小大于transform的子物体的个数 并且 父对象不为空。     则发送一个事件（自己的父对象go，data ； lamda表达式 下一个状态）
         if (index >= transform.childCount && transform.parent != null)
         {
